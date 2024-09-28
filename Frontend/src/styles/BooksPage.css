@@ -1,0 +1,40 @@
+.BooksPage {
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+  }
+  
+  .BookList {
+    margin-top: 20px;
+  }
+  
+  .BookItem {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .AddBookForm {
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .AddBookForm input[type="text"],
+  .AddBookForm button {
+    padding: 8px;
+    margin-right: 5px;
+    margin-top: 5px;
+  }
+  
+  .AddBookForm button {
+    cursor: pointer;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+  
