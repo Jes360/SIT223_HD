@@ -1,32 +1,39 @@
 pipeline {
     agent any
     stages {
-        stage('Build Backend Docker Image') {
+        stage('Build Docker Images') {
             steps {
                 script {
-                    dir('Backend') {
-                        // Build the Docker image for the backend using a Windows batch command
-                        bat 'docker build -t backend-app .'
-                    }
+                    // Build Docker image for the backend
+                    bat 'docker build -t backend-app ./Backend'
+                    // Build Docker image for the frontend
+                    bat 'docker build -t frontend-app ./Frontend'
                 }
             }
         }
-        stage('Build Frontend Docker Image') {
+        stage('Run Tests') {
             steps {
                 script {
-                    dir('Frontend') {
-                        // Build the Docker image for the frontend using a Windows batch command
-                        bat 'docker build -t frontend-app .'
-                    }
+                    // Run tests on the backend image
+                    bat 'docker run backend-app npm test'
+                    // Optionally, run frontend tests if applicable
                 }
             }
         }
-        // Additional stages for testing, deployment, etc., can be added here
+       
+        stage('Deploy') {
+            steps {
+                script {
+                    // Use Docker Compose to start the services
+                    bat 'docker-compose up -d'
+                }
+            }
+        }
     }
     post {
         always {
-            // Add any cleanup scripts if necessary
-            echo "Build process completed."
+            // Clean up, ensure Docker Compose services are taken down
+            bat 'docker-compose down'
         }
     }
 }
