@@ -8,11 +8,11 @@ app.use(cors()); // This will allow all domains, adjust as necessary for securit
 app.use(express.json()); // Middleware to parse JSON bodies
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost/bookReviewDB', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => console.log('MongoDB connected'))
+mongoose.connect('mongodb://host.docker.internal:27017/bookReviewDB')
+  .then(() => console.log('MongoDB connected'))
   .catch(err => console.log('MongoDB connection error:', err));
+
+
 
 // Use bookRoutes for any requests to '/api/books'
 app.use('/api/books', bookRoutes);

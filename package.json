@@ -1,0 +1,8 @@
+{
+    "name": "my-app",
+    "version": "1.0.0",
+    "scripts": {
+      "start-both": "npm start --prefix frontend & node backend/app.js"
+    }
+  }
+  
