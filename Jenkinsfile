@@ -11,17 +11,14 @@ pipeline {
                 }
             }
         }
-        stage('Run Tests') {
+          stage('SonarQube analysis') {
             steps {
-                script {
-                    // Run tests on the backend image
-                    bat 'docker run backend-app npm test'
-                    // Optionally, run frontend tests if applicable
+                withSonarQubeEnv('SonarQube') {
+                    sh 'sonar-scanner -Dsonar.projectKey=sqa_e787da2515bcca2eb35803ba044304b05cc0b639 -Dsonar.sources=./src -Dsonar.host.url=http://localhost:9000'
                 }
             }
         }
-       
-        stage('Deploy') {
+     stage('Deploy') {
             steps {
                 script {
                     // Use Docker Compose to start the services
