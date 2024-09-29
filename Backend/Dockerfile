@@ -1,21 +1,21 @@
-# Using a specific version of node image that's based on Alpine Linux
+# Use a specific version of node based on Alpine for a lightweight image
 FROM node:20-alpine
 
-# Sets the working directory for any RUN, CMD, ENTRYPOINT, COPY, and ADD instructions that follow
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Copy package.json and package-lock.json (or npm-shrinkwrap.json)
 COPY package*.json ./
 
-# Install all dependencies, including 'devDependencies' for testing purposes
-# This is crucial if Jest is listed under 'devDependencies'
+# Install all dependencies, including 'devDependencies' for testing
+# Necessary to ensure tools like Jest are available in the container
 RUN npm install --only=development
 
-# Copy the rest of your application code to the container
+# Copy the rest of your application code into the container
 COPY . .
 
-# Expose the port the application runs on
+# Expose the port the app runs on
 EXPOSE 3001
 
-# Default command to run when starting the container
-CMD ["npm", "test"]
+# The default command to run the application
+CMD ["node", "app.js"]
