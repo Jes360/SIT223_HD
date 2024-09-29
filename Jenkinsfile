@@ -5,9 +5,9 @@ pipeline {
             steps {
                 script {
                     // Build Docker image for the backend
-                    sh 'docker build -t backend-app ./Backend'
+                    bat 'docker build -t backend-app ./Backend'
                     // Build Docker image for the frontend
-                    sh 'docker build -t frontend-app ./Frontend'
+                    bat 'docker build -t frontend-app ./Frontend'
                 }
             }
         }
@@ -15,7 +15,7 @@ pipeline {
             steps {
                 script {
                     // Run tests on the backend image
-                    sh 'docker run backend-app npm test'
+                    bat 'docker run backend-app npm test'
                     // Optionally, run frontend tests if applicable
                 }
             }
@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     // Use Docker Compose to start the services
-                    sh 'docker-compose up -d'
+                    bat 'docker-compose up -d'
                 }
             }
         }
@@ -33,7 +33,7 @@ pipeline {
     post {
         always {
             // Clean up, ensure Docker Compose services are taken down
-            sh 'docker-compose down'
+            bat 'docker-compose down'
         }
     }
 }
