@@ -20,8 +20,7 @@ pipeline {
                 }
             }
         }
-        
-        }
+       
         stage('Deploy') {
             steps {
                 script {
@@ -37,4 +36,4 @@ pipeline {
             sh 'docker-compose down'
         }
     }
-
+}
