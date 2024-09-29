@@ -1,31 +1,39 @@
 pipeline {
-    agent any  // This specifies that the pipeline can run on any available agent
-    environment {
-        // Define environment variables that your scripts might depend on
-        DOCKER_IMAGE = "myapp"
-    }
+    agent any
     stages {
-        stage('Build') {
+        stage('Build Docker Images') {
             steps {
                 script {
-                    // Commands to build your Docker images
-                    sh 'docker-compose build'
+                    // Build Docker image for the backend
+                    sh 'docker build -t backend-app ./Backend'
+                    // Build Docker image for the frontend
+                    sh 'docker build -t frontend-app ./Frontend'
                 }
             }
         }
-        stage('Test') {
+        stage('Run Tests') {
             steps {
                 script {
-                    // Commands to run tests
-                    sh 'docker-compose run backend npm test'
+                    // Run tests on the backend image
+                    sh 'docker run backend-app npm test'
+                    // Optionally, run frontend tests if applicable
+                }
+            }
+        }
+        
+        }
+        stage('Deploy') {
+            steps {
+                script {
+                    // Use Docker Compose to start the services
+                    sh 'docker-compose up -d'
                 }
             }
         }
     }
     post {
-        // Define actions to take based on the outcome of the pipeline stages
         always {
-            // Clean up after the pipeline runs
+            // Clean up, ensure Docker Compose services are taken down
             sh 'docker-compose down'
         }
     }
