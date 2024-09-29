@@ -1,16 +1,12 @@
 FROM node:20-alpine
 WORKDIR /app
+
+# Ensure both dependencies and devDependencies are installed
 COPY package*.json ./
-RUN npm install
+RUN npm install --also=dev
+
 COPY . .
 EXPOSE 3001
-CMD ["node", "app.js"]
 
-FROM node:20-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-EXPOSE 3001
-CMD ["node", "app.js"]
-
+# Use npm test as the default command
+CMD ["npm", "test"]
