@@ -4,8 +4,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install --only=development
 
-# Add a command to check installed Jest version
-RUN npx jest --version
+# Explicitly set the PATH to include local node binaries
+ENV PATH="./node_modules/.bin:$PATH"
 
 COPY . .
 
