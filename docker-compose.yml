@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 version: '3.8'
 services:
   frontend:
@@ -23,7 +23,6 @@ services:
       - mongo-data:/data/db
 volumes:
   mongo-data:
-=======
 version: '3.8'
 services:
   frontend:
@@ -48,4 +47,3 @@ services:
       - mongo-data:/data/db
 volumes:
   mongo-data:
->>>>>>> a1e699ccdde8853ae24e1cf1c0c5e29ec6ea26db
