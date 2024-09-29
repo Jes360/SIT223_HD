@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 version: '3.8'
 services:
   frontend:
@@ -22,3 +23,29 @@ services:
       - mongo-data:/data/db
 volumes:
   mongo-data:
+=======
+version: '3.8'
+services:
+  frontend:
+    build: ./Frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+  backend:
+    build: ./Backend
+    ports:
+      - "3001:3001"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/bookReviewDB
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+volumes:
+  mongo-data:
+>>>>>>> a1e699ccdde8853ae24e1cf1c0c5e29ec6ea26db
