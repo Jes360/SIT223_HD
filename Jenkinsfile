@@ -1,6 +1,7 @@
 pipeline {
     agent any
 
+    stages {
         stage('Build and Run with Docker Compose') {
             steps {
                 script {
@@ -27,6 +28,7 @@ pipeline {
                 }
             }
         }
+    }
 
     post {
         always {
