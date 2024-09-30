@@ -1,14 +1,18 @@
-FROM node:20-alpine
-WORKDIR /app
+FROM node:latest
 
+WORKDIR /usr/src/app
+
+# Copy package.json and package-lock.json
 COPY package*.json ./
-RUN npm install --only=development
 
-# Explicitly set the PATH to include local node binaries
-ENV PATH="./node_modules/.bin:$PATH"
+# Install dependencies
+RUN npm install
 
+# Copy the rest of the application code
 COPY . .
 
+# Expose the port the app runs on
 EXPOSE 3001
 
-CMD ["npm", "test"]
+# Command to run the app
+CMD ["node", "app.js"]
