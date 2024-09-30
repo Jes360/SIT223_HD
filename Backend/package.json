@@ -6,8 +6,8 @@
     "mongoose": "^8.6.3"
   },
   "scripts": {
-  "test": "npx jest --verbose"
-},
+    "test": "jest"
+  },
   "devDependencies": {
     "jest": "^29.7.0",
     "jest-junit": "^16.0.0",
