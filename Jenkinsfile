@@ -1,17 +1,18 @@
 pipeline {
     agent any
+
+    stages {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    // Running SonarQube scanner; ensure 'SonarScanner' is configured in Jenkins Global Tool Configuration
-                    withSonarQubeEnv('SonarQube') { 
-                      
+                    // Assuming 'SonarScanner' is the name configured in Jenkins Global Tool Configuration
+                    def scannerHome = tool 'SonarScanner'
+                    withSonarQubeEnv('SonarQube') { // Ensure the name here matches the SonarQube configuration in Jenkins
                         bat "${scannerHome}/bin/sonar-scanner"
                     }
                 }
             }
         }
-        // Additi
         // Additional stages for testing, deployment, etc., can be added here
     }
     post {
@@ -20,3 +21,4 @@ pipeline {
             echo "Build process completed."
         }
     }
+}
