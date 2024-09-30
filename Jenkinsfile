@@ -1,24 +1,20 @@
 pipeline {
     agent any
 
-    stages {
-        stage('SonarQube Analysis') {
+     stage('Run Tests') {
             steps {
-                script {
-                    // Assuming 'SonarScanner' is the name configured in Jenkins Global Tool Configuration
-                   def scannerHome = tool 'SonarScanner';
-                    withSonarQubeEnv('SonarQube') { // Ensure the name here matches the SonarQube configuration in Jenkins
-                        bat "${scannerHome}/bin/sonar-scanner"
-                    }
+                dir('Backend') { // Ensure commands run in the Backend directory
+                    sh 'npm test' // Executes npm test
                 }
             }
         }
-        // Additional stages for testing, deployment, etc., can be added here
     }
     post {
         always {
-            // Add any cleanup scripts if necessary
-            echo "Build process completed."
+            // Cleanup or post-build actions
+            echo 'Testing completed.'
         }
     }
 }
+       
+   
