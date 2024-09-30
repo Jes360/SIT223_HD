@@ -1,34 +1,29 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs "NodeJS" // Make sure NodeJS is configured in Jenkins Global Tool Configuration
-    }
+        stage('Build and Run with Docker Compose') {
+            steps {
+                script {
+                    // Builds and runs containers in the background
+                    bat 'docker-compose -f docker-compose.yml up --build -d'
+                }
+            }
+        }
 
-    stages {
-        stage('Checkout') {
+        stage('Test') {
             steps {
-                checkout scm // Checks out source code from the repository configured in Jenkins job
-            }
-        }
-        stage('Install Dependencies') {
-            steps {
-                dir('Backend') { // Assuming your Node.js project is in the 'Backend' directory
-                    sh 'npm install' // Installs npm dependencies
+                script {
+                    // Executes npm test in the 'backend-app-container'
+                    bat 'docker exec backend-app-container npm test'
                 }
             }
         }
-        stage('Run Tests') {
+
+        stage('Cleanup') {
             steps {
-                dir('Backend') {
-                    sh 'npm test' // Runs Jest tests
-                }
-            }
-        }
-        stage('Publish Test Results') {
-            steps {
-                dir('Backend') {
-                    junit 'test-results/*.xml' // Change this path to wherever your Jest test results are configured to output
+                script {
+                    // Brings down the containers, removing them and their networks
+                    bat 'docker-compose -f docker-compose.yml down'
                 }
             }
         }
@@ -36,8 +31,7 @@ pipeline {
 
     post {
         always {
-            echo 'Cleaning up'
-            cleanWs() // Cleans up the workspace after the build completes
+            echo 'Pipeline execution complete!'
         }
     }
 }
