@@ -20,4 +20,3 @@ pipeline {
             echo "Build process completed."
         }
     }
-}
