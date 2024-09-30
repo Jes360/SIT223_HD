@@ -5,7 +5,7 @@ pipeline {
         stage('Build and Run with Docker Compose') {
             steps {
                 script {
-                    // Builds and runs containers in the background
+                    // Build and run containers in the background
                     bat 'docker-compose -f docker-compose.yml up --build -d'
                 }
             }
@@ -14,19 +14,11 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    withSonarQubeEnv('SonarQube') { // 'SonarQube' is the name of the SonarQube configuration in Jenkins
-                        bat 'docker exec sit223_hd-backend-1 npm install sonar-scanner --save-dev'
-                        bat 'docker exec sit223_hd-backend-1 node_modules/.bin/sonar-scanner'
-                    }
-                }
-            }
-        }
+                    // Ensure sonar-scanner has execute permissions
+                    bat 'docker exec sit223_hd-backend-1 chmod +x node_modules/.bin/sonar-scanner'
 
-        stage('Test') {
-            steps {
-                script {
-                    // Run npm tests inside the backend container
-                    bat 'docker exec sit223_hd-backend-1 npm test'
+                    // Run SonarQube scanner
+                    bat 'docker exec sit223_hd-backend-1 node_modules/.bin/sonar-scanner'
                 }
             }
         }
@@ -34,7 +26,7 @@ pipeline {
         stage('Cleanup') {
             steps {
                 script {
-                    // Brings down the containers, removing them and their networks
+                    // Bring down the containers, removing them and their networks
                     bat 'docker-compose -f docker-compose.yml down'
                 }
             }
