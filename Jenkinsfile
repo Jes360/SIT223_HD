@@ -11,10 +11,21 @@ pipeline {
             }
         }
 
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    withSonarQubeEnv('SonarQube') { // 'SonarQube' is the name of the SonarQube configuration in Jenkins
+                        bat 'docker exec sit223_hd-backend-1 npm install sonar-scanner --save-dev'
+                        bat 'docker exec sit223_hd-backend-1 node_modules/.bin/sonar-scanner'
+                    }
+                }
+            }
+        }
+
         stage('Test') {
             steps {
                 script {
-                    // Run tests inside the backend container
+                    // Run npm tests inside the backend container
                     bat 'docker exec sit223_hd-backend-1 npm test'
                 }
             }
@@ -23,7 +34,7 @@ pipeline {
         stage('Cleanup') {
             steps {
                 script {
-                    // Bring down the containers, removing them and their networks
+                    // Brings down the containers, removing them and their networks
                     bat 'docker-compose -f docker-compose.yml down'
                 }
             }
