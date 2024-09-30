@@ -6,7 +6,7 @@ pipeline {
             steps {
                 script {
                     // Assuming 'SonarScanner' is the name configured in Jenkins Global Tool Configuration
-                   def scannerHome = tool 'SonarScanner 4.0';
+                   def scannerHome = tool 'SonarScanner';
                     withSonarQubeEnv('SonarQube') { // Ensure the name here matches the SonarQube configuration in Jenkins
                         bat "${scannerHome}/bin/sonar-scanner"
                     }
