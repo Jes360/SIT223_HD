@@ -35,7 +35,7 @@ pipeline {
                         body: 'The Test stage failed.',
                         to: 'emailjenkins55@gmail.com',
                         subject: 'Jenkins Pipeline: Test Stage Failure',
-                        attachdLog: true
+                        attachLog: true
                     )
                 }
             }
@@ -97,6 +97,7 @@ pipeline {
         always {
             archiveArtifacts artifacts: 'build.log'
             emailext (
+                body: 'The pipeline has finished execution. 
                 to: 'emailjenkins55@gmail.com',
                 subject: 'Jenkins Pipeline Execution Complete',
                 attachLog: true
