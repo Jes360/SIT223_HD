@@ -95,7 +95,6 @@ pipeline {
     }
     post {
         always {
-            archiveArtifacts artifacts: 'build.log'
             emailext (
                 body: 'The pipeline has finished execution',
                 to: 'emailjenkins55@gmail.com',
