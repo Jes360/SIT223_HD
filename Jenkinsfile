@@ -27,7 +27,7 @@ pipeline {
                         body: 'The Test stage completed successfully.',
                         to: 'emailjenkins55@gmail.com',
                         subject: 'Jenkins Pipeline: Test Stage Success',
-                        attachBuildLog: true
+                        attachLog: true
                     )
                 }
                 failure {
@@ -35,7 +35,7 @@ pipeline {
                         body: 'The Test stage failed.',
                         to: 'emailjenkins55@gmail.com',
                         subject: 'Jenkins Pipeline: Test Stage Failure',
-                        attachBuildLog: true
+                        attachdLog: true
                     )
                 }
             }
@@ -55,7 +55,7 @@ pipeline {
                         body: 'SonarQube Analysis completed successfully.',
                         to: 'emailjenkins55@gmail.com',
                         subject: 'Jenkins Pipeline: SonarQube Analysis Success',
-                        attachBuildLog: true
+                        attachLog: true
                     )
                 }
                 failure {
@@ -63,7 +63,7 @@ pipeline {
                         body: 'SonarQube Analysis failed.',
                         to: 'emailjenkins55@gmail.com',
                         subject: 'Jenkins Pipeline: SonarQube Analysis Failure',
-                        attachBuildLog: true
+                        attachLog: true
                     )
                 }
             }
@@ -99,7 +99,7 @@ pipeline {
             emailext (
                 to: 'emailjenkins55@gmail.com',
                 subject: 'Jenkins Pipeline Execution Complete',
-                attachBuildLog: true
+                attachLog: true
             )
         }
     }
