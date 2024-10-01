@@ -97,7 +97,6 @@ pipeline {
         always {
             archiveArtifacts artifacts: 'build.log'
             emailext (
-                body: 'The pipeline has finished execution. \n\n Logs: \n' + ${BUILD_LOG, maxLines=1000, escapeHtml=true},
                 to: 'emailjenkins55@gmail.com',
                 subject: 'Jenkins Pipeline Execution Complete',
                 attachBuildLog: true
