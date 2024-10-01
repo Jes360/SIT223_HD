@@ -25,12 +25,12 @@ pipeline {
             }
             post {
                 success {
-                    emailext body: 'The Test stage completed successfully.',
+                    emailext body: "The Test stage completed successfully.\n\n${BUILD_LOG, maxLines=250}",
                              to: 'emailjenkins55@gmail.com',
                              subject: 'Jenkins Pipeline: Test Stage Success'
                 }
                 failure {
-                    emailext body: 'The Test stage failed.',
+                    emailext body: "The Test stage failed.\n\n${BUILD_LOG, maxLines=250}",
                              to: 'emailjenkins55@gmail.com',
                              subject: 'Jenkins Pipeline: Test Stage Failure'
                 }
@@ -48,12 +48,12 @@ pipeline {
             }
             post {
                 success {
-                    emailext body: 'SonarQube Analysis completed successfully.',
+                    emailext body: "SonarQube Analysis completed successfully.\n\n${BUILD_LOG, maxLines=250}",
                              to: 'emailjenkins55@gmail.com',
                              subject: 'Jenkins Pipeline: SonarQube Analysis Success'
                 }
                 failure {
-                    emailext body: 'SonarQube Analysis failed.',
+                    emailext body: "SonarQube Analysis failed.\n\n${BUILD_LOG, maxLines=250}",
                              to: 'emailjenkins55@gmail.com',
                              subject: 'Jenkins Pipeline: SonarQube Analysis Failure'
                 }
@@ -91,7 +91,7 @@ pipeline {
 
     post {
         always {
-            emailext body: 'The pipeline has finished execution.',
+            emailext body: "The pipeline has finished execution.\n\n${BUILD_LOG, maxLines=250}",
                      to: 'emailjenkins55@gmail.com',
                      subject: 'Jenkins Pipeline Execution Complete'
         }
