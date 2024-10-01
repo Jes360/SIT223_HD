@@ -2,11 +2,20 @@ pipeline {
     agent any
 
     stages {
-        stage('Build and Run with Docker Compose') {
+        stage('Build Docker Images') {
             steps {
                 script {
-                    // Build and run containers in the background
-                    bat 'docker-compose -f docker-compose.yml up --build -d'
+                    // Build Docker images for both backend and frontend without starting them
+                    bat 'docker-compose -f docker-compose.yml build'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    // Executes npm test directly in the specified running backend container
+                    bat 'docker exec sit223_hd-backend-1 npm test'
                 }
             }
         }
@@ -22,22 +31,16 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                script {
-                    // Executes npm test in the 'backend-app-container'
-                    bat 'docker exec sit223_hd-backend-1 npm test'
-                }
-            }
-        }
-  stage('Deploy with Docker Compose') {
+        stage('Deploy with Docker Compose') {
             steps {
                 script {
                     // Deploy all services using Docker Compose
                     bat 'docker-compose -f docker-compose.yml up -d'
                 }
             }
-        }        stage('Cleanup') {
+        }
+
+        stage('Cleanup') {
             steps {
                 script {
                     // Brings down the containers, removing them and their networks
