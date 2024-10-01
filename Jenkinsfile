@@ -5,7 +5,6 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 script {
-                    // Build Docker images for both backend and frontend
                     dir('Backend') {
                         bat 'docker build -t backend-app .'
                     }
@@ -19,20 +18,23 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    // Running tests on the backend image
                     bat 'docker run backend-app npm test'
                 }
             }
             post {
                 success {
-                    emailext body: "The Test stage completed successfully.\n\n${BUILD_LOG, maxLines=250}",
-                             to: 'emailjenkins55@gmail.com',
-                             subject: 'Jenkins Pipeline: Test Stage Success'
+                    emailext(
+                        body: "The Test stage completed successfully.\n\n${BUILD_LOG,maxLines=250}",
+                        subject: 'Jenkins Pipeline: Test Stage Success',
+                        to: 'emailjenkins55@gmail.com'
+                    )
                 }
                 failure {
-                    emailext body: "The Test stage failed.\n\n${BUILD_LOG, maxLines=250}",
-                             to: 'emailjenkins55@gmail.com',
-                             subject: 'Jenkins Pipeline: Test Stage Failure'
+                    emailext(
+                        body: "The Test stage failed.\n\n${BUILD_LOG,maxLines=250}",
+                        subject: 'Jenkins Pipeline: Test Stage Failure',
+                        to: 'emailjenkins55@gmail.com'
+                    )
                 }
             }
         }
@@ -40,7 +42,6 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    // Run SonarScanner directly on Jenkins
                     withSonarQubeEnv('SonarQube') {
                         bat 'C:/SonarQube/sonar-scanner-6.2.0.4584-windows-x64/bin/sonar-scanner -Dsonar.projectKey=Jekins -Dsonar.sources=. -Dsonar.host.url=http://localhost:9000 -Dsonar.token=sqp_2b3c30cee20a131c1ceae8e37dfe704b092efe96'
                     }
@@ -48,14 +49,18 @@ pipeline {
             }
             post {
                 success {
-                    emailext body: "SonarQube Analysis completed successfully.\n\n${BUILD_LOG, maxLines=250}",
-                             to: 'emailjenkins55@gmail.com',
-                             subject: 'Jenkins Pipeline: SonarQube Analysis Success'
+                    emailext(
+                        body: "SonarQube Analysis completed successfully.\n\n${BUILD_LOG,maxLines=250}",
+                        subject: 'Jenkins Pipeline: SonarQube Analysis Success',
+                        to: 'emailjenkins55@gmail.com'
+                    )
                 }
                 failure {
-                    emailext body: "SonarQube Analysis failed.\n\n${BUILD_LOG, maxLines=250}",
-                             to: 'emailjenkins55@gmail.com',
-                             subject: 'Jenkins Pipeline: SonarQube Analysis Failure'
+                    emailext(
+                        body: "SonarQube Analysis failed.\n\n${BUILD_LOG,maxLines=250}",
+                        subject: 'Jenkins Pipeline: SonarQube Analysis Failure',
+                        to: 'emailjenkins55@gmail.com'
+                    )
                 }
             }
         }
@@ -63,7 +68,6 @@ pipeline {
         stage('Deploy with Docker Compose') {
             steps {
                 script {
-                    // Use Docker Compose to deploy containers
                     bat 'docker-compose -f docker-compose.yml up --build -d'
                 }
             }
@@ -83,7 +87,6 @@ pipeline {
 
         stage('Cleanup') {
             steps {
-                // Leaving the containers running as requested
                 echo 'Cleanup skipped to keep the server running.'
             }
         }
@@ -91,9 +94,11 @@ pipeline {
 
     post {
         always {
-            emailext body: "The pipeline has finished execution.\n\n${BUILD_LOG, maxLines=250}",
-                     to: 'emailjenkins55@gmail.com',
-                     subject: 'Jenkins Pipeline Execution Complete'
+            emailext(
+                body: "The pipeline has finished execution.\n\n${BUILD_LOG,maxLines=250}",
+                subject: 'Jenkins Pipeline Execution Complete',
+                to: 'emailjenkins55@gmail.com'
+            )
         }
     }
 }
