@@ -16,7 +16,7 @@ pipeline {
                 script {
                     // Run SonarScanner directly on Jenkins
                     withSonarQubeEnv('SonarQube') {
-                        bat 'sonar-scanner-Dsonar.projectKey=Jekins-Dsonar.sources=. -Dsonar.host.url=http://localhost:9000  -Dsonar.token=sqp_2b3c30cee20a131c1ceae8e37dfe704b092efe96'
+                        bat 'sonar-scanner -Dsonar.projectKey=Jekins -Dsonar.sources=. -Dsonar.host.url=http://localhost:9000 -Dsonar.token=sqp_2b3c30cee20a131c1ceae8e37dfe704b092efe96'
                     }
                 }
             }
