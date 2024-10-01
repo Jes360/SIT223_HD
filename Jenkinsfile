@@ -45,12 +45,22 @@ pipeline {
             }
         }
 
+        stage('Deploy to AWS') {
+            steps {
+                echo 'Mock deployment to AWS would occur here.'
+            }
+        }
+
+        stage('Monitoring Setup') {
+            steps {
+                echo 'Setup for Prometheus and Grafana would be configured here.'
+            }
+        }
+
         stage('Cleanup') {
             steps {
-                script {
-                    // Clean up Docker containers
-                    bat 'docker-compose -f docker-compose.yml down'
-                }
+                // Leaving the containers running as requested
+                echo 'Cleanup skipped to keep the server running.'
             }
         }
     }
