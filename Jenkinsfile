@@ -5,7 +5,7 @@ pipeline {
         stage('Build and Run with Docker Compose') {
             steps {
                 script {
-                    // Builds and runs containers in the background
+                    // Build and run containers in the background
                     bat 'docker-compose -f docker-compose.yml up --build -d'
                 }
             }
@@ -14,8 +14,19 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    // Run SonarScanner globally from the container
-                    bat 'docker exec sit223_hd-backend-1 sonar-scanner'
+                    // Run SonarScanner directly on Jenkins
+                    withSonarQubeEnv('SonarQube') {
+                        bat 'sonar-scanner-Dsonar.projectKey=Jekins-Dsonar.sources=. -Dsonar.host.url=http://localhost:9000  -Dsonar.token=sqp_2b3c30cee20a131c1ceae8e37dfe704b092efe96'
+                    }
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    // Executes npm test in the 'backend-app-container'
+                    bat 'docker exec sit223_hd-backend-1 npm test'
                 }
             }
         }
