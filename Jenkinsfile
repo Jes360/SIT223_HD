@@ -23,6 +23,18 @@ pipeline {
                     bat 'docker run backend-app npm test'
                 }
             }
+            post {
+                success {
+                    emailext body: 'The Test stage completed successfully.',
+                             to: 'emailjenkins55@gmail.com',
+                             subject: 'Jenkins Pipeline: Test Stage Success'
+                }
+                failure {
+                    emailext body: 'The Test stage failed.',
+                             to: 'emailjenkins55@gmail.com',
+                             subject: 'Jenkins Pipeline: Test Stage Failure'
+                }
+            }
         }
 
         stage('SonarQube Analysis') {
@@ -32,6 +44,18 @@ pipeline {
                     withSonarQubeEnv('SonarQube') {
                         bat 'C:/SonarQube/sonar-scanner-6.2.0.4584-windows-x64/bin/sonar-scanner -Dsonar.projectKey=Jekins -Dsonar.sources=. -Dsonar.host.url=http://localhost:9000 -Dsonar.token=sqp_2b3c30cee20a131c1ceae8e37dfe704b092efe96'
                     }
+                }
+            }
+            post {
+                success {
+                    emailext body: 'SonarQube Analysis completed successfully.',
+                             to: 'emailjenkins55@gmail.com',
+                             subject: 'Jenkins Pipeline: SonarQube Analysis Success'
+                }
+                failure {
+                    emailext body: 'SonarQube Analysis failed.',
+                             to: 'emailjenkins55@gmail.com',
+                             subject: 'Jenkins Pipeline: SonarQube Analysis Failure'
                 }
             }
         }
@@ -67,7 +91,9 @@ pipeline {
 
     post {
         always {
-            echo 'Pipeline execution complete!'
+            emailext body: 'The pipeline has finished execution.',
+                     to: 'emailjenkins55@gmail.com',
+                     subject: 'Jenkins Pipeline Execution Complete'
         }
     }
 }
